@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Watchlist {
@@ -20,6 +21,17 @@ public class Watchlist {
 	@ElementCollection(targetClass = String.class)
 	private List<String> tickers;
 	
+	@ManyToOne
+	private User owner;
+	
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
 	public Watchlist() {
 		// TODO Auto-generated constructor stub
 	}
