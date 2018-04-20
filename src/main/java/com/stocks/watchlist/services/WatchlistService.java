@@ -34,4 +34,9 @@ public class WatchlistService {
 		// TODO Auto-generated method stub
 		watchlistRepository.deleteById(id);
 	}
+
+	public boolean idExists(long id) {
+		// TODO Auto-generated method stub
+		return watchlistRepository.findById(id).isPresent();
+	}
 }

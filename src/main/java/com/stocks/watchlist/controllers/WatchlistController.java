@@ -43,10 +43,10 @@ public class WatchlistController {
 	public String updateWatchlist(@RequestBody Watchlist wl, @PathVariable long id){
 		//try to update
 		try {
-			if(id == wl.getId()) {
+			if(watchlistService.idExists(id)) {
 				watchlistService.updateWatchlist(id,wl);
 			} else {
-				return "watchlistid does not match urlid"; 
+				return "id does not exists"; 
 			}
 			
 		} catch (Exception e) {
