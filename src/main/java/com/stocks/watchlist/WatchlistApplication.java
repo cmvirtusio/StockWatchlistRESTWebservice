@@ -40,8 +40,12 @@ public class WatchlistApplication {
 	@Autowired
 	public void authenticationManager(AuthenticationManagerBuilder builder, UserRepository repository, UserService service) throws Exception {
 		//Setup a default user if db is empty
-		if (repository.count()==0)
+		if (repository.count()==0) {
 			service.save(new User("user", "user", Arrays.asList(new Role("USER"), new Role("ACTUATOR"))));
+			service.save(new User("user1", "user1", Arrays.asList(new Role("USER"), new Role("ACTUATOR"))));
+			service.save(new User("user2", "user2", Arrays.asList(new Role("USER"), new Role("ACTUATOR"))));
+		}
+			
 		
 		//Helper Function
 		builder.userDetailsService(userDetailsService(repository)).passwordEncoder(passwordEncoder);

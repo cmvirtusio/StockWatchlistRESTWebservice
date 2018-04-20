@@ -38,6 +38,15 @@ public class WatchlistController {
 		return watchlistService.getAllWatchlists();
 	}
 	
+	@GetMapping(value = "/allwatchlists/{username}")
+	public List<Watchlist> getAllWatchlistsbyUser(@PathVariable String username){
+		//userService.getUser(username) looks for the user;
+		//then findByUser does select * from joinedtable where userid = userid;
+		return watchlistService.findByUser(userService.getUser(username));
+	}
+	
+	
+	
 	//Create a watchlist
 	@PostMapping(value = "/watchlist")
 	public String createWatchlist(@RequestBody Watchlist wl){

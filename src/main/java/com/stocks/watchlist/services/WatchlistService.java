@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.stocks.watchlist.models.User;
 import com.stocks.watchlist.models.Watchlist;
 import com.stocks.watchlist.repositories.WatchlistRepository;
 
@@ -38,5 +39,10 @@ public class WatchlistService {
 	public boolean idExists(long id) {
 		// TODO Auto-generated method stub
 		return watchlistRepository.findById(id).isPresent();
+	}
+
+	public List<Watchlist> findByUser(User user) {
+		//Implement findByOwnerId because OwnerId is a foreignkey
+		return watchlistRepository.findByOwnerId(user.getId());
 	}
 }
