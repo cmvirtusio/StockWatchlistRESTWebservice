@@ -1,5 +1,7 @@
 package com.stocks.watchlist.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,6 +32,11 @@ public class UserService {
 	public User getUser(String username) {
 		// TODO Auto-generated method stub
 		return repo.findByUsername(username);
+	}
+
+	public List<User> getAllUsers() {
+		// TODO Auto-generated method stub
+		return repo.findAll();
 	}
 
 }
