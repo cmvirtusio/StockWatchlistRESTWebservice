@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
+	//This has all the "protected REST endpoints
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable().and()

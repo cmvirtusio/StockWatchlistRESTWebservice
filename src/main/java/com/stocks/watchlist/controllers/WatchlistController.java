@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stocks.watchlist.config.CustomUserDetails;
+import com.stocks.watchlist.models.User;
 import com.stocks.watchlist.models.Watchlist;
 import com.stocks.watchlist.services.UserService;
 import com.stocks.watchlist.services.WatchlistService;
@@ -31,21 +32,22 @@ public class WatchlistController {
 		return "index";
 	}
 	
-	
-	
 	@GetMapping(value = "/allwatchlists")
 	public List<Watchlist> getAllWatchlists(){
 		return watchlistService.getAllWatchlists();
 	}
 	
+	//Read only, not protected
+	//Can be protected by testing for userDatail.getUsername();
 	@GetMapping(value = "/allwatchlists/{username}")
 	public List<Watchlist> getAllWatchlistsbyUser(@PathVariable String username){
 		//userService.getUser(username) looks for the user;
 		//then findByUser does select * from joinedtable where userid = userid;
+		if( userService.getUser(username) == null) {
+			return new ArrayList<Watchlist>();
+		}
 		return watchlistService.findByUser(userService.getUser(username));
 	}
-	
-	
 	
 	//Create a watchlist
 	@PostMapping(value = "/watchlist")
@@ -63,29 +65,40 @@ public class WatchlistController {
 	//update watchlist
 	@PutMapping(value = "/watchlist/{id}")
 	public String updateWatchlist(@RequestBody Watchlist wl, @PathVariable long id){
-		//try to update
-		try {
-			if(watchlistService.idExists(id)) {
-				watchlistService.updateWatchlist(id,wl);
+		CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(watchlistService.idExists(id)) {
+			User ownerOfWatchlist = watchlistService.owner(id).getOwner();
+			User currentUser = userService.getUser(userDetails.getUsername());
+			if(ownerOfWatchlist.equals(currentUser)) {
+				if(id == wl.getId()) {
+					watchlistService.updateWatchlist(id,wl);
+					return "Updated: " + id;
+				} else {
+					return "id param does not match id of watchlist";
+				}
 			} else {
-				return "id does not exists"; 
+				return "you are not the owner";
 			}
-			
-		} catch (Exception e) {
-			return "Unable to update bacause of error: " + e.getMessage(); 
-		}
-		return "Updated: " + id;
+		} else {
+			return "id does not exists";
+		}		
 	}
 	
 	//delete watchlist
 	@DeleteMapping(value = "/watchlist/{id}")
 	public String deleteWatchlist(@PathVariable long id){
-		//try to update
-		try {
-			watchlistService.deleteWatchlist(id);
-		} catch (Exception e) {
-			return "Unable to update bacause of error: " + e.getMessage(); 
+		CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(watchlistService.idExists(id)) {
+			User ownerOfWatchlist = watchlistService.owner(id).getOwner();
+			User currentUser = userService.getUser(userDetails.getUsername());
+			if(ownerOfWatchlist.equals(currentUser)) {
+				watchlistService.deleteWatchlist(id);
+				return "Deleted: " + id;
+			} else {
+				return "you are not the owner";
+			}
+		} else {
+			return "id does not exists";
 		}
-		return "Deleted: " + id;
 	}
 }

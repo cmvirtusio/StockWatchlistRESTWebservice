@@ -1,6 +1,7 @@
 package com.stocks.watchlist.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -38,7 +39,11 @@ public class WatchlistService {
 
 	public boolean idExists(long id) {
 		// TODO Auto-generated method stub
-		return watchlistRepository.findById(id).isPresent();
+		return watchlistRepository.existsById(id);
+	}
+	
+	public Watchlist owner(long id) {
+		return watchlistRepository.findById(id).orElse(null);
 	}
 
 	public List<Watchlist> findByUser(User user) {
