@@ -18,6 +18,9 @@ public class UserService {
     @Autowired
     private UserRepository repo;
 
+    
+    //Encodes everything {bcrypt}
+    //Important for Spring Security 5.0
     @Bean
     public PasswordEncoder getPasswordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();

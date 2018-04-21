@@ -1,20 +1,13 @@
 package com.stocks.watchlist;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.stocks.watchlist.config.CustomUserDetails;
-import com.stocks.watchlist.models.Role;
-import com.stocks.watchlist.models.User;
 import com.stocks.watchlist.repositories.UserRepository;
 import com.stocks.watchlist.services.UserService;
 
