@@ -61,6 +61,16 @@ public class WatchlistController {
 		return "Watchlist Created";
 	}
 	
+	//Get Watchlist Based Token
+	@GetMapping(value = "/watchlist")
+	public List<Watchlist> getWatchlist(){
+		CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
+		String username = userDetails.getUsername();
+		if( userService.getUser(username) == null) {
+			return new ArrayList<Watchlist>();
+		}
+		return watchlistService.findByUser(userService.getUser(username));
+	}	
 	
 	//update watchlist
 	@PutMapping(value = "/watchlist/{id}")
